@@ -122,6 +122,18 @@ func (w *Writer) WriteString(value string) bool {
 	return w.Write(w.bs)
 }
 
+// WriteHeader writes a header. Headers are always strings
+func (w *Writer) WriteHeader(headers []string) bool {
+
+	for _, s := range headers {
+		if !w.WriteString(s) {
+			return false
+		}
+	}
+	w.EndOfRecord()
+	return w.err == nil
+}
+
 var (
 	// ErrNewLine is the error returned when a value contains a newline in unquoted mode.
 	ErrNewLine = errors.New("yacr.Writer: newline character in value")
